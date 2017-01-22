@@ -60,47 +60,65 @@ class Game
 
 			return winning_array.any?{|set| set.all?{|index| @a[index]==@player_symbol} }
 
-		end
-
-		def draw?
-			if @a.all?{|square| square == "X" || square =="O"}
-				@player_symbol = "D"
-				true
-			end
-		end
-
-		def game_over
-			if @player_symbol == "D"
-				puts "It was a draw!"
-				exit
-			else
-				puts "#{@player_symbol} won!"
-				exit
-			end
-		end
-
-		def valid_move 
-			@square = @square.to_i
-			return true if @a.include?(@square)
-		end
-
-		def play
-			puts "Let's play tic-tac-toe!"
-			puts "The choices are square 1-9"
-			new_board
-			update_board
-			loop do 
-				turn
-				if game_won? == true || draw? ==true
-					game_over
-				end
-				switch
-			end
-		end
-
 	end
 
-	game = Game.new.play
+	def draw?
+		if @a.all?{|square| square == "X" || square =="O"}
+			@player_symbol = "D"
+			true
+		end
+	end
+
+	def game_over
+		if @player_symbol == "D"
+			puts "It was a draw!"
+		else
+			puts "#{@player_symbol} won!"
+		end
+	end
+
+	def valid_move 
+		@square = @square.to_i
+		return true if @a.include?(@square)
+	end
+
+	def play_again?
+		choice = false
+		loop do
+			puts "Would you like to play tic-tac-toe again? Type y or n."
+			choice = gets.chomp
+			break if choice =="y" || choice == "n"
+		end
+
+		if choice == "y"
+			true
+		else
+			false
+		end
+	end
+
+	def play
+		puts "Let's play tic-tac-toe! The choices are square 1-9"
+		new_board
+		update_board
+		loop do 
+			turn
+			if game_won? == true || draw? ==true
+				game_over
+				if play_again? == true
+					play
+				else
+					exit
+				end
+			end
+			switch
+		end
+	end
+
+end
+
+
+game = Game.new.play
 
 
 
