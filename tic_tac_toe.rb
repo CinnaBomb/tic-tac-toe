@@ -48,21 +48,35 @@ class Game
 	end
 
 	def game_won?
+		#FIX THIS!
 		winning_array = [
-			[1, 2, 3],
-			[4, 5, 6],
-			[7, 8, 9],
+			[0, 1, 2],
+			[3, 4, 5],
+			[6, 7, 8],
+			[0, 3, 6],
 			[1, 4, 7],
 			[2, 5, 8],
-			[3, 6, 9],
-			[1, 5, 9],
-			[3, 5, 7] ]
-			puts winning_array.any?{|set| @a.include?(set)}.inspect
-		winning_array.any?{|set| @a.include?(set)}
+			[0, 4, 8],
+			[2, 4, 6] ]
+			#return [0,3,6].all?{|index| @a[index]==@player_symbol}
+			return winning_array.any?{|set| set.all?{|index| @a[index]==@player_symbol} }
+			#false
+
+
+=begin
+			winning_array.each do |set|
+				if set.all? {|index| @a[index]==@player_symbol}
+					true
+				end
+			end
+			false
+=end
+
 	end
 
 	def game_over
 		puts "#{@player_symbol} won!"
+		exit
 	end
 
 	def valid_move 
@@ -75,8 +89,11 @@ class Game
 		puts "The choices are square 1-9"
 		new_board
 		update_board
-		until game_won?
+		loop do 
 			turn
+			if game_won? == true
+				game_over
+			end
 			switch
 		end
 	end
