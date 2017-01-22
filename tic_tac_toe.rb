@@ -48,7 +48,6 @@ class Game
 	end
 
 	def game_won?
-		#FIX THIS!
 		winning_array = [
 			[0, 1, 2],
 			[3, 4, 5],
@@ -58,49 +57,50 @@ class Game
 			[2, 5, 8],
 			[0, 4, 8],
 			[2, 4, 6] ]
-			#return [0,3,6].all?{|index| @a[index]==@player_symbol}
+
 			return winning_array.any?{|set| set.all?{|index| @a[index]==@player_symbol} }
-			#false
 
-
-=begin
-			winning_array.each do |set|
-				if set.all? {|index| @a[index]==@player_symbol}
-					true
-				end
-			end
-			false
-=end
-
-	end
-
-	def game_over
-		puts "#{@player_symbol} won!"
-		exit
-	end
-
-	def valid_move 
-		@square = @square.to_i
-		return true if @a.include?(@square)
-	end
-
-	def play
-		puts "Let's play tic-tac-toe!"
-		puts "The choices are square 1-9"
-		new_board
-		update_board
-		loop do 
-			turn
-			if game_won? == true
-				game_over
-			end
-			switch
 		end
+
+		def draw?
+			if @a.all?{|square| square == "X" || square =="O"}
+				@player_symbol = "D"
+				true
+			end
+		end
+
+		def game_over
+			if @player_symbol == "D"
+				puts "It was a draw!"
+				exit
+			else
+				puts "#{@player_symbol} won!"
+				exit
+			end
+		end
+
+		def valid_move 
+			@square = @square.to_i
+			return true if @a.include?(@square)
+		end
+
+		def play
+			puts "Let's play tic-tac-toe!"
+			puts "The choices are square 1-9"
+			new_board
+			update_board
+			loop do 
+				turn
+				if game_won? == true || draw? ==true
+					game_over
+				end
+				switch
+			end
+		end
+
 	end
 
-end
-
-game = Game.new.play
+	game = Game.new.play
 
 
 
